@@ -54,7 +54,7 @@ namespace MountainBikeTrailHeads.Models
                         Name = "VASA Pathway",
                         Rating = 4,
                         Description = "The VASA Singletrack is an excellent example of the smooth, well-maintained trails that have been built by the Michigan Mountain Biking Association in cooperation with the Department of Natural Resources. Thirteen miles of twisting singletrack wind along a groomed trail with banked corners, allowing you to turn almost without braking. There are plenty of gentle whoop-de-dos on the straight portions of the trail for an added thrill.",
-                        TrailCount = 35,
+                        TrailCount = 30,
                         TotalDistance = 68,
                         TotalDescent = 5439,
                         CityNear = "Traverse City, MI",
