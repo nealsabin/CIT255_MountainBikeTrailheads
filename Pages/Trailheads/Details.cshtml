@@ -11,95 +11,139 @@
         width: 100%;
     }
 
-    html, body {
+/*    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+    }*/
+
+    .mapContainer{
         height: 100%;
         margin: 0;
         padding: 0;
         width: 100%;
     }
+/*    .infoContainer {
+        display: flex;
+        flex-direction: row;
+    }*/
+    .titleBanner{
+        display: flex;
+        flex-direction: row;
+        padding-bottom: 10px;
+    }
+    h2, h4{
+        margin-top: auto;
+        margin-bottom: auto;
+    }
+    .bottomSection {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        margin-right: auto;
+        margin-left: auto;
+        background-color: #F4F4F4;
+        border-radius: 25px;
+        margin-top: 10px;
+    }
+    #description, #stats{
+        flex: 50%;
+    }
 </style>
 
 @*<h1>Details</h1>*@
-<head>
-   
-</head>
-<div class="row col-12">
-    <div id="map"></div>
-    <script type="text/javascript">
-        let map;
+<main class="infoContainer">
+    <div class="titleBanner">
+        <h2>
+            @Html.DisplayFor(model => model.Trailhead.Name)
+        </h2>
+        <h4 style="color: dimgray; padding-left: 15px;">
+            Mountain Biking Trails
+        </h4>
+    </div>
 
-        function initMap() {
-            const trailheadLocation = { lat: @Html.DisplayFor(model => model.Trailhead.Latitude), lng: @Html.DisplayFor(model => model.Trailhead.Longitude) };
-            map = new google.maps.Map(document.getElementById("map"), {
-                center: trailheadLocation,
-                zoom: 10
-            });
+    <section class="mapContainer row col-12">
+        <div id="map"></div>
+        <script type="text/javascript">
+            let map;
 
-            new google.maps.Marker({
-                position: trailheadLocation,
-                map,
-                title: "@Html.DisplayFor(model => model.Trailhead.Name)",
-            });
+            function initMap() {
+                const trailheadLocation = { lat: @Html.DisplayFor(model => model.Trailhead.Latitude), lng: @Html.DisplayFor(model => model.Trailhead.Longitude) };
+                map = new google.maps.Map(document.getElementById("map"), {
+                    center: trailheadLocation,
+                    zoom: 10
+                });
 
-        }
-    </script>
-    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCOl0srl5AMDDYpU7TkPanrLUVDcNEgD_U&callback=initMap&v=weekly"
-            async defer>
-    </script>
-</div>
-<div class="row">
-    <div>
-        <h4>Trailhead</h4>
-        <hr />
-        <dl class="row">
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Trailhead.Name)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Trailhead.Name)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Trailhead.Rating)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Trailhead.Rating)
-            </dd>
+                new google.maps.Marker({
+                    position: trailheadLocation,
+                    map,
+                    title: "@Html.DisplayFor(model => model.Trailhead.Name)"
+                });
+
+            }
+        </script>
+        <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCOl0srl5AMDDYpU7TkPanrLUVDcNEgD_U&callback=initMap&v=weekly"
+                async defer>
+        </script>
+    </section>
+
+    <section class="jumbotron shadow bottomSection">
+        <div id="description">
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.Trailhead.Description)
             </dt>
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.Trailhead.Description)
             </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Trailhead.TrailCount)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Trailhead.TrailCount)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Trailhead.TotalDistance)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Trailhead.TotalDistance)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Trailhead.TotalDescent)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Trailhead.TotalDescent)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Trailhead.CityNear)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Trailhead.CityNear)
-            </dd>
-        </dl>
+        </div>
+        <div id="stats">
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Trailhead.Rating) 
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Trailhead.Rating) / 5
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Trailhead.TrailCount)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Trailhead.TrailCount)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Trailhead.TotalDistance)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Trailhead.TotalDistance)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Trailhead.TotalDescent)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Trailhead.TotalDescent)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Trailhead.CityNear)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Trailhead.CityNear)
+                </dd>
+            </dl>
+        </div>
+
+    </section>
+    <div class="row">
+        <div>
+            
+        </div>
+        <div>
+            <a asp-page="./Edit" asp-route-id="@Model.Trailhead.ID">Edit</a> |
+            <a asp-page="./Index">Back to List</a>
+        </div>
     </div>
-    <div>
-        <a asp-page="./Edit" asp-route-id="@Model.Trailhead.ID">Edit</a> |
-        <a asp-page="./Index">Back to List</a>
-    </div>
-</div>
+</main>
+
     

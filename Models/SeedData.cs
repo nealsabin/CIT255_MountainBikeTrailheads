@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using MountainBikeTrailHeads.Data;
 using System;
-using System.Linq;
 
 namespace MountainBikeTrailHeads.Models
 {
@@ -60,7 +59,32 @@ namespace MountainBikeTrailHeads.Models
                         CityNear = "Traverse City, MI",
                         Latitude = 44.70191058269106,
                         Longitude = -85.48318961203985
+                    },
+                    new Trailhead
+                    {
+                        Name = "Glacial Hills",
+                        Rating = 4,
+                        Description = "Glacial Hills Pathway and Natural Area is managed by The Friends of Glacial Hills who represents its landowners: Antrim County, Forest Home Township, and the Village of Bellaire. The Pathways provide over 31 miles of professionally designed and well-maintained, all-season trails for mountain biking, hiking, running, cross country skiing and snowshoeing. Glacial Hills’ terrain was fashioned by the retreat of glaciers and is a woodland composed of rolling hills with elevations rising more than 400 feet above the Trailheads. Nature has since adorned Glacial Hills with Michigan conifers, hardwoods, wildflowers, fall colors, and snowfall. Mountain bikers describe the trails as “fast, flowy, and fun.” The warm seasons bring mountain bikers, hikers, and runners. Winter is time for fat tire biking, skiing and snowshoeing. Glacial Hills is a peaceful, enjoyable place to explore. Its rolling hills, great views, abundant nature, and winding paths provide for an unforgettable experience.",
+                        TrailCount = 99,
+                        TotalDistance = 29,
+                        TotalDescent = 4722,
+                        CityNear = "Bellaire, MI",
+                        Latitude = 44.990073,
+                        Longitude = -85.255176
                     }
+                    //,
+                    //new Trailhead
+                    //{
+                    //    Name = "Avalanche Preserve",
+                    //    Rating = 5,
+                    //    Description = "Boyne City’s Avalanche Park boast some great trails that has a little bit of everything for everyone. Beginners may encounter some steep pitches in places, rooty sections, and a variety of flowy downhill sections, but it's well worth it Multiple routes exist that lead to the viewing platform with epic views of Lake Charlevoix. These trails are also groomed for what will be your favorite winter fat biking experience.",
+                    //    TrailCount = 9,
+                    //    TotalDistance = 8,
+                    //    TotalDescent = 1351,
+                    //    CityNear = "Boyne City, MI",
+                    //    Latitude = 45.200745,
+                    //    Longitude = -85.012585
+                    //}
                     );
                 context.SaveChanges();
             }

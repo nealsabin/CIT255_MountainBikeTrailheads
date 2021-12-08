@@ -5,72 +5,271 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<style>
+    body {
+        font-family: 'Roboto', sans-serif;
+        background: rgb(108,159,180);
+        background: linear-gradient(180deg, rgba(108,159,180,0.5943511193539917) 5%, rgba(129,138,140,0.8744631641719187) 100%);
+    }
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
-<form>
-    <select asp-for="SearchPlace" asp-items="Model.Places">
-        <option value="">All</option>
-    </select>
-    <input type="text" asp-for="SearchString" />
-    <input type="submit" value="Search" />
-</form>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                <a asp-page="./Index" asp-route-sortOrder="@Model.NameSort">
-                    @Html.DisplayNameFor(model => model.Trailhead[0].Name)
-                </a>
-                
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Trailhead[0].Rating)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Trailhead[0].TrailCount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Trailhead[0].TotalDistance)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Trailhead[0].TotalDescent)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Trailhead[0].CityNear)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Trailhead) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Rating)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TrailCount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TotalDistance)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TotalDescent)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CityNear)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    table {
+        /*border: solid black 2px;*/
+        box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
+        border-radius: 5px;
+    }
+
+    tr {
+        background-color: #F4F4F4;
+        /*border-top: solid black 2px;*/
+        border-bottom: solid black 2px;
+    }
+
+        tr:last-child {
+            border: none;
+        }
+
+    th {
+        border: none;
+        background-color: #dddeda;
+    }
+
+    a {
+        color: black;
+    }
+
+    .controls {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+    .createButton {
+        flex: 4;
+        align-items: center;
+    }
+
+    button {
+        border: solid black 2px;
+        border-radius: 5px;
+        background-color: #ABD996;
+        margin-left: 5px;
+    }
+
+        button:hover {
+            background-color: #F4F4F4;
+            transition: all 0.3s ease;
+        }
+
+    form {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    input {
+        background-color: #F4F4F4;
+        border: solid black 2px;
+        border-radius: 5px;
+        width: 175px;
+        margin-right: 5px;
+    }
+
+        input[type=submit] {
+            background-color: #94AFF2;
+            border: solid black 2px;
+            border-radius: 5px;
+            width: max-content;
+        }
+
+            input[type=submit]:hover {
+                background-color: #F4F4F4;
+                text-decoration: none;
+                color: black;
+                transition: all 0.3s ease;
+            }
+
+    .sortButtons {
+        background-color: #94AFF2;
+        border: solid black 2px;
+        border-radius: 5px;
+        width: max-content;
+        padding: 0px 4px 0px 4px;
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+
+        .sortButtons:hover {
+            background-color: #F4F4F4;
+            text-decoration: none;
+            color: black;
+            transition: all 0.3s ease;
+        }
+
+    .clearButton {
+        background-color: #ec7e7c;
+    }
+
+        .clearButton:hover {
+            background-color: #F4F4F4;
+            text-decoration: none;
+            color: black;
+            transition: all 0.3s ease;
+        }
+
+    #map {
+        height: 600px;
+        width: 100%;
+    }
+
+    .mapContainer {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+    }
+</style>
+
+@*<h1>Trailheads</h1>*@
+
+<body>
+    <div class="mapContainer row col-12">
+        <div id="map"></div>
+        <script type="text/javascript">
+            //let locations = [
+            //    [44.70191058269106, -85.48318961203985],
+            //    [44.89281605174706, -85.91537976079013],
+            //    [46.51433632960725, -87.41238244430868]
+            //];
+
+            let locations = [];
+
+            @foreach (var item in Model.Trailhead)
+            {
+                @:locations.push(["@item.Latitude", "@item.Longitude", "@item.Name"])
+            }
+
+            let map;
+
+            function initMap() {
+                map = new google.maps.Map(document.getElementById("map"), {
+                    center: { lat: 45.538773, lng: -86.205209},
+                    zoom: 7
+                });
+
+                let marker, i;
+
+                for (i = 0; i < locations.length; i++) {
+                    marker = new google.maps.Marker({
+                        position: new google.maps.LatLng(locations[i][0], locations[i][1]),
+                        map: map,
+                        title: locations[i][2]
+                    });
+                }
+
+                @*@foreach (var item in Model.Trailhead)
+                {
+                    marker = new google.maps.Marker({
+                    position: new google.maps.LatLgn(@Html.DisplayFor(modelItem => item.Latitude), @Html.DisplayFor(modelItem => item.Longitude)),
+                    map: map, 
+                    title: "Trailhead"
+                    });
+                }*@
+
+
+                    @*new google.maps.Marker({
+                        position: trailheadLocation,
+                        map,
+                        title: "@Html.DisplayFor(modelItem => item.Name)",
+                    });*@
+                }
+    </script>
+
+    @*Async script executes immediately and must be after any DOM elements used in callback.*@
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCOl0srl5AMDDYpU7TkPanrLUVDcNEgD_U&callback=initMap&v=weekly"
+            async defer>
+    </script>
+    </div>
+    <h2 style="color: black;">Mountain Bike Trail Systems</h2>
+    <div class="controls">
+        <div class="createButton">
+            <button>
+                <a asp-page="Create" style="text-decoration:none; color: black;">Create New</a>
+            </button>
+
+        </div>
+        <form>
+            @*<select asp-for="SearchPlace" asp-items="Model.Places">
+                    <option value="">All</option>
+                </select>*@
+            <input type="text" asp-for="SearchString" />
+            <input type="submit" value="Search" />
+            <button class="clearButton">
+                <a style="text-decoration: none; color: black;" asp-route-SearchString="">Clear</a>
+            </button>
+        </form>
+    </div>
+
+    <table class="table col-12">
+        <thead>
+            <tr>
+                <th>
+                    <a class="sortButtons" asp-page="./Index" asp-route-sortOrder="@Model.NameSort">
+                        @Html.DisplayNameFor(model => model.Trailhead[0].Name)
+                    </a>
+                </th>
+                @*<th>
+                        @Html.DisplayNameFor(model => model.Trailhead[0].Rating)
+                    </th>*@
+                <th>
+                    @Html.DisplayNameFor(model => model.Trailhead[0].TrailCount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Trailhead[0].TotalDistance)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Trailhead[0].TotalDescent)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Trailhead[0].CityNear)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Trailhead)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    @*<td>
+                            @Html.DisplayFor(modelItem => item.Rating)
+                        </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TrailCount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalDistance)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalDescent)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CityNear)
+                    </td>
+                    <td>
+                        <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
+                        <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
+                        <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+</body>
+
+
