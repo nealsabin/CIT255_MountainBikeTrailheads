@@ -30,7 +30,7 @@ namespace MountainBikeTrailHeads.Pages.Trailheads
 
         //public IList<Trailhead> Trailhead { get;set; }
 
-        public async Task OnGetAsync(string sortOrder)
+        public async Task OnGetAsync(string sortOrder, string searchString)
         {
             NameSort = String.IsNullOrEmpty(sortOrder) ? "NameDesc" : "";
 
@@ -42,16 +42,16 @@ namespace MountainBikeTrailHeads.Pages.Trailheads
                              select t;
 
             //search by name
-            if (!string.IsNullOrEmpty(SearchString))
+            if (!string.IsNullOrEmpty(searchString))
             {
-                trailheads = trailheads.Where(t => t.Name.Contains(SearchString));
+                trailheads = trailheads.Where(t => t.Name.Contains(searchString) || t.CityNear.Contains(searchString));
             }
 
             //search by city near
-            if (!string.IsNullOrEmpty(SearchPlace))
-            {
-                trailheads = trailheads.Where(n => n.CityNear.Contains(SearchPlace));
-            }
+            //if (!string.IsNullOrEmpty(SearchPlace))
+            //{
+            //    trailheads = trailheads.Where(n => n.CityNear.Contains(SearchPlace));
+            //}
 
             //Sort by name
             //if (NameSort == "desc")

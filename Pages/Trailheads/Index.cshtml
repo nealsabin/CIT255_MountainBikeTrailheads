@@ -137,11 +137,6 @@
     <div class="mapContainer row col-12">
         <div id="map"></div>
         <script type="text/javascript">
-            //let locations = [
-            //    [44.70191058269106, -85.48318961203985],
-            //    [44.89281605174706, -85.91537976079013],
-            //    [46.51433632960725, -87.41238244430868]
-            //];
 
             let locations = [];
 
@@ -168,30 +163,15 @@
                     });
                 }
 
-                @*@foreach (var item in Model.Trailhead)
-                {
-                    marker = new google.maps.Marker({
-                    position: new google.maps.LatLgn(@Html.DisplayFor(modelItem => item.Latitude), @Html.DisplayFor(modelItem => item.Longitude)),
-                    map: map, 
-                    title: "Trailhead"
-                    });
-                }*@
-
-
-                    @*new google.maps.Marker({
-                        position: trailheadLocation,
-                        map,
-                        title: "@Html.DisplayFor(modelItem => item.Name)",
-                    });*@
-                }
-    </script>
+            }
+        </script>
 
     @*Async script executes immediately and must be after any DOM elements used in callback.*@
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCOl0srl5AMDDYpU7TkPanrLUVDcNEgD_U&callback=initMap&v=weekly"
             async defer>
     </script>
     </div>
-    <h2 style="color: black;">Mountain Bike Trail Systems</h2>
+    <h3 style="color: black; padding-top: 10px;">Mountain Bike Trail Systems</h3>
     <div class="controls">
         <div class="createButton">
             <button>
